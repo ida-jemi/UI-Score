@@ -2,6 +2,7 @@
 A React + Tailwind based UI analysis tool that evaluates screenshots and provides design insights.
 
 **Features**
+
 -> Upload UI screenshots
 -> AI-based UI scoring
 -> Issue detection
