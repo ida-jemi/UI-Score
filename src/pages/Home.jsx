@@ -8,26 +8,30 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [theme, setTheme] = useState("dark");
 
-  // Apply theme to <html> so CSS variables cascade everywhere
+  // Toggle class on <body> — this beats any specificity fight with :root
   useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
+    if (theme === "light") {
+      document.body.classList.add("light");
+    } else {
+      document.body.classList.remove("light");
+    }
   }, [theme]);
 
   const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
 
-  const handleAnalyze = async (imageData) => {
+  const handleAnalyze = async (imageData, category) => {
     setLoading(true);
     setResult(null);
     try {
       const response = await fetch("/api/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ image: imageData }),
+        body: JSON.stringify({ image: imageData, category }),
       });
       const data = await response.json();
       setResult(data);
     } catch {
-      // Mock result for demo / when API isn't connected yet
+      // Mock result for demo
       setResult({
         score: 82,
         issues: ["Overlapping elements", "Inconsistent spacing"],
@@ -42,22 +46,15 @@ export default function Home() {
 
   return (
     <div className="home-wrapper">
-      {/* ── Top bar ── */}
       <header className="home-header">
         <div className="logo">
           <span className="logo-icon">◈</span>
           <span className="logo-text">UI<span className="logo-accent">Score</span></span>
         </div>
 
-        {/* Theme toggle */}
-        <button
-          className="theme-toggle"
-          onClick={toggleTheme}
-          title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-        >
+        <button className="theme-toggle" onClick={toggleTheme}>
           {theme === "dark" ? (
-            /* Sun icon */
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
               <circle cx="12" cy="12" r="5"/>
               <line x1="12" y1="1" x2="12" y2="3"/>
               <line x1="12" y1="21" x2="12" y2="23"/>
@@ -69,12 +66,11 @@ export default function Home() {
               <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
             </svg>
           ) : (
-            /* Moon icon */
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
               <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
             </svg>
           )}
-          <span>{theme === "dark" ? "Light" : "Dark"}</span>
+          <span>{theme === "dark" ? "Light mode" : "Dark mode"}</span>
         </button>
 
         <p className="home-tagline">Detect issues. Improve design. Instantly.</p>
@@ -109,9 +105,8 @@ export default function Home() {
           flex-direction: column;
           align-items: center;
           padding: 40px 0 16px;
-          gap: 10px;
+          gap: 12px;
           animation: fadeSlideDown 0.7s ease both;
-          position: relative;
         }
         .logo {
           display: flex;
@@ -131,19 +126,12 @@ export default function Home() {
           color: var(--text-primary);
         }
         .logo-accent { color: var(--accent-primary); }
-        .home-tagline {
-          color: var(--text-secondary);
-          font-size: 14px;
-          font-weight: 300;
-          letter-spacing: 0.3px;
-        }
 
-        /* ── Theme toggle pill ── */
         .theme-toggle {
           display: flex;
           align-items: center;
-          gap: 6px;
-          padding: 7px 14px;
+          gap: 7px;
+          padding: 8px 16px;
           background: var(--bg-card);
           border: 1px solid var(--border-bright);
           border-radius: 999px;
@@ -157,9 +145,15 @@ export default function Home() {
         .theme-toggle:hover {
           border-color: var(--accent-primary);
           color: var(--accent-primary);
-          background: rgba(108, 99, 255, 0.06);
+          background: rgba(108, 99, 255, 0.07);
         }
 
+        .home-tagline {
+          color: var(--text-secondary);
+          font-size: 14px;
+          font-weight: 300;
+          letter-spacing: 0.3px;
+        }
         .home-main {
           flex: 1;
           width: 100%;

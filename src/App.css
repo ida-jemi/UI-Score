@@ -1,8 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
 
-/* ── DARK THEME (default) ── */
-:root,
-[data-theme="dark"] {
+/* ── SHARED TOKENS ── */
+:root {
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.12);
+  --shadow-glow: 0 0 40px var(--accent-glow, transparent);
+}
+
+/* ── DARK (default — no attribute needed) ── */
+:root {
   --bg-base: #080b14;
   --bg-surface: #0d1220;
   --bg-card: rgba(255, 255, 255, 0.04);
@@ -20,36 +30,26 @@
   --orb2: rgba(0, 212, 170, 0.08);
 }
 
-/* ── LIGHT THEME ── */
-[data-theme="light"] {
+/* ── LIGHT — targets body.light so it wins over :root ── */
+body.light {
   --bg-base: #f4f5fb;
   --bg-surface: #eceef8;
-  --bg-card: rgba(255, 255, 255, 0.75);
-  --bg-card-hover: rgba(255, 255, 255, 0.92);
-  --border: rgba(100, 100, 160, 0.12);
-  --border-bright: rgba(100, 100, 160, 0.22);
+  --bg-card: rgba(255, 255, 255, 0.8);
+  --bg-card-hover: rgba(255, 255, 255, 0.95);
+  --border: rgba(100, 100, 160, 0.14);
+  --border-bright: rgba(100, 100, 160, 0.25);
   --accent-primary: #5a52e8;
   --accent-secondary: #00b891;
   --accent-warn: #e8504a;
-  --accent-glow: rgba(90, 82, 232, 0.15);
+  --accent-glow: rgba(90, 82, 232, 0.18);
   --text-primary: #14162a;
-  --text-secondary: rgba(20, 22, 42, 0.6);
-  --text-muted: rgba(20, 22, 42, 0.35);
-  --orb1: rgba(90, 82, 232, 0.08);
-  --orb2: rgba(0, 184, 145, 0.06);
+  --text-secondary: rgba(20, 22, 42, 0.62);
+  --text-muted: rgba(20, 22, 42, 0.38);
+  --orb1: rgba(90, 82, 232, 0.07);
+  --orb2: rgba(0, 184, 145, 0.05);
 }
 
-/* ── SHARED TOKENS ── */
-:root {
-  --font-display: 'Syne', sans-serif;
-  --font-body: 'DM Sans', sans-serif;
-  --radius-sm: 8px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
-  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.12);
-  --shadow-glow: 0 0 40px var(--accent-glow);
-}
-
+/* ── BASE ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 
@@ -83,7 +83,6 @@ body::after {
   pointer-events: none;
   z-index: 0;
 }
-
 #root {
   position: relative;
   z-index: 1;
